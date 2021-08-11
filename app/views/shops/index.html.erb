@@ -1,6 +1,33 @@
+<h1>Shops</h1>
+<br>
+
 <p id="notice"><%= notice %></p>
 
-<h1>Shops</h1>
+<br>
+<%= form_with(model: @shop, remote: true, format: :json) do |form| %>
+  <% if @shop.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shop.errors.count, "error") %> prohibited this shop from being saved:</h2>
+
+      <ul>
+        <% @shop.errors.full_messages.each do |message| %>
+          <li id="error_message"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: "shop_name_form" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "submit", class: "btn btn-info" %>
+  </div>
+<% end %>
+
+<br><br>
 
 <table>
   <thead>
@@ -10,10 +37,10 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody id="shop_list">
     <% @shops.each do |shop| %>
       <tr>
-        <td><%= shop.name %> | </td>
+        <td><%= shop.name %> </td>
         <td><%= link_to 'Show', shop %> | </td>
         <td><%= link_to 'Edit', edit_shop_path(shop) %> | </td>
         <td><%= link_to 'Destroy', shop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -25,3 +52,54 @@
 <br>
 
 <%= link_to 'New Shop', new_shop_path, class: 'btn btn-primary' %>
+
+
+<script>
+  $(function() {
+    $("form").submit(function(e) {               // イベント内容をeに格納
+      console.log(e.cancelable);                 // イベントがキャンセル可能か確認
+      e.preventDefault();                        // イベントキャンセル  =>  キャンセル
+      e.stopPropagation();                       // イベントキャンセル =>  イベントのバブリングを停止する
+      const url = $(e.target).attr("action");
+      const formData = new FormData(e.target);
+
+      $.ajax({                                   // Ajax通信を行う
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: formData,
+        processData: false,
+        contentType: false,
+      })
+      .done(function(data) {
+        shop_id = data["id"];                    // dataのidを変数に格納
+        shop_name = data["name"];                // dataのnameを変数に格納
+        let shop_list = $("#shop_list");
+        let html = `<tr>
+                      <td>${shop_name} </td>
+                      <td><a href="/shops/${shop_id}">Show</a> | </td>
+                      <td><a href="/shops/${shop_id}/edit">Edit</a> | </td>
+                      <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/shops/${shop_id}">Destroy</a></td>
+                    </tr>
+                   `;
+        $("#shop_list").append($(html)); //#shop_listの末尾にhtmlを追加
+        $("#shop_name_form").val("");
+        $("#notice").html(`<p id="notice">new shop created!</p>`) //レコード登録完了表示
+      })
+      .fail(function(data) {                                               //リクエスト失敗の通知
+        response = JSON.parse(data.responseText);
+        console.log(response.name)
+        error = ` <div id="notice">
+                    <p>"エラー:" ${data.status}</p>
+                    <p>"カラム名:" ${Object.keys(response)}</p>
+                    <p>"内容:"    ${response.name}</p>
+                  </div>
+                ` ;
+        $("#notice").html(error); //エラー内容表示
+      })
+      .always(function(data) {
+        console.log('finish')
+      });
+    });
+  });
+</script>

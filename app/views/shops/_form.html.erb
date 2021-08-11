@@ -20,36 +20,3 @@
     <%= form.submit %>
   </div>
 <% end %>
-
-<script>
-  $(function() {
-    $("form").submit(function(e) {               //イベント内容をeに格納
-      console.log(e.cancelable);                 //イベントがキャンセル可能か確認
-      e.preventDefault();                        //イベントキャンセル  =>  キャンセル
-      // e.stopPropagation();                        //イベントキャンセル =>  イベントのバブリングを停止する
-      const url = $(e.target).attr("action");
-
-      $.ajax({                                   //Ajax通信を行う
-        url: url,
-        type: "POST",
-        dataType: "json",
-        data: {"shop_name": $('#shop_name_form').val()},
-        processData: false,
-        contentType: false
-      })
-      .done(function(data) {
-        alert('done');
-      })
-      .fail(function(data) {
-        alert("fail");                           //リクエスト失敗の通知
-        console.log("エラー:" + data.status);     //エラーステータス
-        // alert(data.responseText);             //バリデーションエラー内容
-      })
-      .always(function(data) {
-        console.log(JSON.stringify(data));      //成功時: インスタンス  失敗時: バリデーションエラー内容
-        // $("#response").empty()                  //タグの内容を空にする
-        // $("#response").append(JSON.stringify(data)); //タグにdataを表示する
-      });
-    });
-  });
-</script>
