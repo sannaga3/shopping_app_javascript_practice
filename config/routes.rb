@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :items
   root to: "shops#index"
   resources :shops
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
