@@ -1,10 +1,10 @@
-<h1>Shops</h1>
+<h1>Top</h1>
 <br>
 
 <p id="notice"><%= notice %></p>
-
 <br>
-<%= form_with(model: @shop, remote: true, format: :json) do |form| %>
+<h3>new shop</h3>
+<%= form_with(model: @shop, remote: true, format: :json, id: "shop_form") do |form| %>
   <% if @shop.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@shop.errors.count, "error") %> prohibited this shop from being saved:</h2>
@@ -41,7 +41,7 @@
     <% @shops.each do |shop| %>
       <tr>
         <td><%= shop.name %> </td>
-        <td><%= link_to 'Show', shop %> | </td>
+        <td> | <%= link_to 'Show', shop %> | </td>
         <td><%= link_to 'Edit', edit_shop_path(shop) %> | </td>
         <td><%= link_to 'Destroy', shop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -49,14 +49,58 @@
   </tbody>
 </table>
 
-<br>
+<br><br>
 
-<%= link_to 'New Shop', new_shop_path, class: 'btn btn-primary' %>
+<h3>new item</h3>
 
+<%= form_with(model: @item, local: true) do |f| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this @item from being saved:</h2>
+
+      <ul>
+        <% @item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :price %>
+    <%= f.number_field :price %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stock %>
+    <%= f.number_field :stock %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comment %>
+    <%= f.text_field :comment , value: "新商品入荷しました！"%>
+  </div>
+
+  <div class="field">
+    <%= f.label :shop_id %>
+    <%= f.select :shop_id, @shops.all.map {|shop| ["#{shop.name}", shop.id]}, include_blank: "選択して下さい"%>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= render partial: 'items/index', item: @items %>
 
 <script>
   $(function() {
-    $("form").submit(function(e) {               // イベント内容をeに格納
+    $("#shop_form").submit(function(e) {               // イベント内容をeに格納
       console.log(e.cancelable);                 // イベントがキャンセル可能か確認
       e.preventDefault();                        // イベントキャンセル  =>  キャンセル
       e.stopPropagation();                       // イベントキャンセル =>  イベントのバブリングを停止する
