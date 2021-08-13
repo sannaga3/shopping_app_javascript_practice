@@ -139,6 +139,7 @@
         $("#shop_name_form").val("");
         $("#notice").html(`<p id="notice">new shop created!</p>`) //レコード登録完了表示
         $("#notice2").html(`<p id="notice2"></p>`)
+        $('#item_shop_form').append($('<option>').val(shop_id).text(shop_name)); // Itemのフォームのshopのプルダウンメニューに作成したインスタンス情報追加
       })
       .fail(function(data) {                                               //リクエスト失敗の通知
         const response = JSON.parse(data.responseText);
@@ -172,16 +173,16 @@
         contentType: false,
       })
       .done(function(data) {
-        const item_id = data["id"];            //以下item一覧に追加するカラムの値を取得
+        const item_id = data["id"];            // 以下item一覧に追加するカラムの値を取得
         const shop_name = $("#item_shop_form").children(':selected').text();
         const item_name = data["name"];
         const item_price = data["price"];
         const item_stock = data["stock"];
         const item_comment = data["comment"];
-        const item_time_element = data["created_at"];
-        const item_time_elements = item_time_element.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2})/);
-        const item_created_at = item_time_elements[1] + "/" + item_time_elements[2] + "/" + item_time_elements[3] + " " + item_time_elements[4];
-        const item_list = $("#item_list");
+        const item_time_element = data["created_at"];                                                 // DBのcreated_atの形式で取得
+        const item_time_elements = item_time_element.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2})/);  // 年月日 時:分 の形でキャプチャ
+        const item_created_at = item_time_elements[1] + "/" + item_time_elements[2] + "/" + item_time_elements[3] + " " + item_time_elements[4]; // item一覧での表示形式に変換
+        const item_list = $("#item_list");  // itemインスタンス作成時に追加するテーブル取得。以下テーブルに追加するhtmlの作成
         const html = `<tr>
                         <td>${item_created_at}</td>
                         <td>${shop_name}</td>
@@ -204,7 +205,7 @@
         $("#notice").html(`<p id="notice"></p>`)
       })
       .fail(function(data) {
-        const response = JSON.parse(data.responseText);  // 以下エラーメッセージ
+        const response = JSON.parse(data.responseText);  // 以下エラーメッセージ表示
         const error = ` <div id="notice2">
                           <p>エラー: ${data.status}</p>
                           <p>内容:   ${Object.keys(response)} ${response.name}</p>
