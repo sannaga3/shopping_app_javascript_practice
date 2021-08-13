@@ -127,13 +127,14 @@
         const shop_id = data["id"];                    // dataのidを変数に格納
         const shop_name = data["name"];                // dataのnameを変数に格納
         const shop_list = $("#shop_list");
-        const html = `<tr>
-                      <td>${shop_name} </td>
-                      <td><a href="/shops/${shop_id}">Show</a> | </td>
-                      <td><a href="/shops/${shop_id}/edit">Edit</a> | </td>
-                      <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/shops/${shop_id}">Destroy</a></td>
-                    </tr>
-                   `;
+        const html = `
+                      <tr>
+                        <td>${shop_name} </td>
+                        <td><a href="/shops/${shop_id}">Show</a> | </td>
+                        <td><a href="/shops/${shop_id}/edit">Edit</a> | </td>
+                        <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/shops/${shop_id}">Destroy</a></td>
+                      </tr>
+                     `;
         $("#shop_list").append($(html)); //#shop_listの末尾にhtmlを追加
         $("#shop_name_form").val("");
         $("#notice").html(`<p id="notice">new shop created!</p>`) //レコード登録完了表示
@@ -182,17 +183,17 @@
         const item_created_at = item_time_elements[1] + "/" + item_time_elements[2] + "/" + item_time_elements[3] + " " + item_time_elements[4];
         const item_list = $("#item_list");
         const html = `<tr>
-                      <td>${item_created_at}</td>
-                      <td>${shop_name}</td>
-                      <td>${item_name}</td>
-                      <td>${item_price}</td>
-                      <td>${item_stock}</td>
-                      <td>${item_comment}</td>
-                      <td> | <a href="/items/${item_id}">Show</a> | </td>
-                      <td><a href="/items/${item_id}/edit">Edit</a> | </td>
-                      <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/items/${item_id}">Destroy</a></td>
-                    </tr>
-                   `;
+                        <td>${item_created_at}</td>
+                        <td>${shop_name}</td>
+                        <td>${item_name}</td>
+                        <td>${item_price}</td>
+                        <td>${item_stock}</td>
+                        <td>${item_comment}</td>
+                        <td> | <a href="/items/${item_id}">Show</a> | </td>
+                        <td><a href="/items/${item_id}/edit">Edit</a> | </td>
+                        <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/items/${item_id}">Destroy</a></td>
+                      </tr>
+                    `;
         $("#item_list").append($(html)); // #shop_listの末尾にhtmlを追加
         $("#item_name_form").val("");    // 以下フォームとエラーメッセージ等の初期化
         $("#item_price_form").val("");
