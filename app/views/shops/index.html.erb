@@ -29,6 +29,7 @@
 
 <br><br>
 
+<h3>shop list</h3>
 <table>
   <thead>
     <tr>
@@ -41,7 +42,7 @@
     <% @shops.each do |shop| %>
       <tr>
         <td><%= shop.name %> </td>
-        <td> | <%= link_to 'Show', shop %> | </td>
+        <td> | <%= link_to 'Show', shop, "data-shop-detail" => "#{shop.id}" "," "#{shop.name}" %> | </td>
         <td><%= link_to 'Edit', edit_shop_path(shop) %> | </td>
         <td><%= link_to 'Destroy', shop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -52,74 +53,81 @@
 <br><br>
 
 <h3>new item</h3>
+<p id="notice2"><%= notice %></p>
+<%= form_with(model: @item, local: true, id: "item_form") do |f| %>
+  <div id="item_error_area"></div>
+    <% if @item.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@item.errors.count, "error") %> prohibited this @item from being saved:</h2>
 
-<%= form_with(model: @item, local: true) do |f| %>
-  <% if @item.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this @item from being saved:</h2>
-
-      <ul>
-        <% @item.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
+        <ul>
+          <% @item.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
   <% end %>
+  </div>
 
   <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, id: "item_name_form" %>
   </div>
 
   <div class="field">
     <%= f.label :price %>
-    <%= f.number_field :price %>
+    <%= f.number_field :price, id: "item_price_form" %>
   </div>
 
   <div class="field">
     <%= f.label :stock %>
-    <%= f.number_field :stock %>
+    <%= f.number_field :stock,  id: "item_stock_form" %>
   </div>
 
   <div class="field">
     <%= f.label :comment %>
-    <%= f.text_field :comment , value: "新商品入荷しました！"%>
+    <%= f.text_field :comment , value: "新商品入荷しました！", id: "item_comment_form"%>
   </div>
 
   <div class="field">
     <%= f.label :shop_id %>
-    <%= f.select :shop_id, @shops.all.map {|shop| ["#{shop.name}", shop.id]}, include_blank: "選択して下さい"%>
+    <%= f.select :shop_id, @shops.all.map {|shop| ["#{shop.name}", shop.id]}, { prompt: '選択してください', "data-value" => "" }, id: "item_shop_form"%>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "submit", class: "btn btn-info"%>
   </div>
 <% end %>
 
+<br><br>
+
 <%= render partial: 'items/index', item: @items %>
+
+<br><br>
 
 <script>
   $(function() {
-    $("#shop_form").submit(function(e) {               // イベント内容をeに格納
+    // Shopモデルのcreateアクションここから
+    $("#shop_form").submit(function(e) {         // イベント内容をeに格納
       console.log(e.cancelable);                 // イベントがキャンセル可能か確認
       e.preventDefault();                        // イベントキャンセル  =>  キャンセル
       e.stopPropagation();                       // イベントキャンセル =>  イベントのバブリングを停止する
       const url = $(e.target).attr("action");
-      const formData = new FormData(e.target);
+      const shopData = new FormData(e.target);
 
       $.ajax({                                   // Ajax通信を行う
         url: url,
         type: "POST",
         dataType: "json",
-        data: formData,
+        data: shopData,
         processData: false,
         contentType: false,
       })
       .done(function(data) {
-        shop_id = data["id"];                    // dataのidを変数に格納
-        shop_name = data["name"];                // dataのnameを変数に格納
-        let shop_list = $("#shop_list");
-        let html = `<tr>
+        const shop_id = data["id"];                    // dataのidを変数に格納
+        const shop_name = data["name"];                // dataのnameを変数に格納
+        const shop_list = $("#shop_list");
+        const html = `<tr>
                       <td>${shop_name} </td>
                       <td><a href="/shops/${shop_id}">Show</a> | </td>
                       <td><a href="/shops/${shop_id}/edit">Edit</a> | </td>
@@ -129,21 +137,88 @@
         $("#shop_list").append($(html)); //#shop_listの末尾にhtmlを追加
         $("#shop_name_form").val("");
         $("#notice").html(`<p id="notice">new shop created!</p>`) //レコード登録完了表示
+        $("#notice2").html(`<p id="notice2"></p>`)
       })
       .fail(function(data) {                                               //リクエスト失敗の通知
-        response = JSON.parse(data.responseText);
-        console.log(response.name)
-        error = ` <div id="notice">
-                    <p>"エラー:" ${data.status}</p>
-                    <p>"カラム名:" ${Object.keys(response)}</p>
-                    <p>"内容:"    ${response.name}</p>
+        const response = JSON.parse(data.responseText);
+        const error = ` <div id="notice">
+                    <p>エラー: ${data.status}</p>
+                    <p>内容:   ${Object.keys(response)} ${response.name}</p>
                   </div>
                 ` ;
         $("#notice").html(error); //エラー内容表示
       })
       .always(function(data) {
-        console.log('finish')
+        console.log('finish');
       });
     });
+    // Shopモデルのcreateアクションここまで
+
+    // Itemモデルのcreateアクションここから
+    $("#item_form").submit(function(e) {         // イベント内容をeに格納
+      console.log(e.cancelable);                 // イベントがキャンセル可能か確認
+      e.preventDefault();                        // イベントキャンセル  =>  キャンセル
+      e.stopPropagation();                       // イベントキャンセル =>  イベントのバブリングを停止する
+      const url = $(e.target).attr("action");
+      const ItemData = new FormData(e.target);
+
+      $.ajax({                                   // Ajax通信を行う
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: ItemData,
+        processData: false,
+        contentType: false,
+      })
+      .done(function(data) {
+        const item_id = data["id"];            //以下item一覧に追加するカラムの値を取得
+        const shop_name = $("#item_shop_form").children(':selected').text();
+        const item_name = data["name"];
+        const item_price = data["price"];
+        const item_stock = data["stock"];
+        const item_comment = data["comment"];
+        const item_time_element = data["created_at"];
+        const item_time_elements = item_time_element.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2})/);
+        const item_created_at = item_time_elements[1] + "/" + item_time_elements[2] + "/" + item_time_elements[3] + " " + item_time_elements[4];
+        const item_list = $("#item_list");
+        const html = `<tr>
+                      <td>${item_created_at}</td>
+                      <td>${shop_name}</td>
+                      <td>${item_name}</td>
+                      <td>${item_price}</td>
+                      <td>${item_stock}</td>
+                      <td>${item_comment}</td>
+                      <td> | <a href="/items/${item_id}">Show</a> | </td>
+                      <td><a href="/items/${item_id}/edit">Edit</a> | </td>
+                      <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/items/${item_id}">Destroy</a></td>
+                    </tr>
+                   `;
+        $("#item_list").append($(html)); // #shop_listの末尾にhtmlを追加
+        $("#item_name_form").val("");    // 以下フォームとエラーメッセージ等の初期化
+        $("#item_price_form").val("");
+        $("#item_stock_form").val("");
+        $("#item_comment_form").val("新商品入荷しました！");
+        $("#item_shop_form").val("");
+        $("#notice2").html(`<p id="notice2">new item created!</p>`)
+        $("#notice").html(`<p id="notice"></p>`)
+      })
+      .fail(function(data) {
+        const response = JSON.parse(data.responseText);  // 以下エラーメッセージ
+        const error = ` <div id="notice2">
+                          <p>エラー: ${data.status}</p>
+                          <p>内容:   ${Object.keys(response)} ${response.name}</p>
+                        </div>
+                      ` ;
+        if (data.status == 422) {
+          $("#notice2").html(error);
+        } else {
+          $("#notice2").html(`<p>"エラー:" ${data.status}</p>`);
+        }
+      })
+      .always(function(data) {
+        console.log('finish');
+      });
+    });
+    // Itemモデルのcreateアクションここまで
   });
 </script>
