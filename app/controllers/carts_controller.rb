@@ -4,6 +4,8 @@ class CartsController < ApplicationController
   # GET /carts or /carts.json
   def index
     @carts = Cart.all
+    @shops = Shop.all
+    @items = Item.all
   end
 
   # GET /carts/1 or /carts/1.json
@@ -13,6 +15,8 @@ class CartsController < ApplicationController
   # GET /carts/new
   def new
     @cart = Cart.new
+    @shops = Shop.all
+    @items = Item.all
   end
 
   # GET /carts/1/edit

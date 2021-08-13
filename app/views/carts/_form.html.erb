@@ -12,14 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
+    <%= f.label :shop_id %>
+    <%= f.select :shop_id, @shops.all.map {|shop| ["#{shop.name}", shop.id]}, { prompt: '選択してください', "data-value" => "" }, id: "item_shop_form"%>
   </div>
 
-  <div class="field">
-    <%= form.label :shop_id %>
-    <%= form.text_field :shop_id %>
-  </div>
+  <%= form.hidden_field :user_id, value:current_user.id %>
+
+  <%= f.fields_for :cart_items do |image| %>
+    <%= render partial: 'items/index', item: @items %>
+    <%= image.hidden_field :id, value: image.object.id %> #編集時にはidが必要らしい
+  <%= f.submit %>
 
   <div class="actions">
     <%= form.submit %>
