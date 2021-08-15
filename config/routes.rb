@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :cart_items
-  resources :carts
+  resources :carts do
+    get 'add_item', on: :member
+  end
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'

@@ -1,0 +1,40 @@
+<h1>Select Item Into Cart</h1>
+
+<div class="d-flex flex-row">
+  <%= render partial: 'items/index',  locals: {item: @items, cart_items: @cart_items} %>
+  <div style="padding-left: 20px; border-left: solid 2px gray">
+    <h3>Cart list</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Shop</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>quantity</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody id="cart_item_list">
+        <% if @cart_items != nil %>
+          <% @cart_items.each do |cart_item| %>
+            <tr>
+              <td><%= cart_item.item.shop.name %></td>
+              <td><%= cart_item.item.name %></td>
+              <td><%= cart_item.item.price %></td>
+              <td><%= cart_item.item.stock %></td>
+              <%= form_with(model: @cart_items, local: true, url: cart_item_path, method: :patch) do |form| %>
+                <td><%= form.number_field :quantity, id: "quantity_form#{cart_item}", style: "width: 40px; height: 23px", class: "quantity_form", value: cart_item.quantity %>個</td>
+                <td><%= form.submit "数量変更", id: "add_item_button#{cart_item}", class: "add_item_button" %></td>
+                <%= form.hidden_field :id, value: cart_item.id %>
+              <% end %>
+              <td><%= link_to 'Destroy', cart_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

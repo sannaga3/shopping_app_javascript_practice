@@ -8,6 +8,13 @@ class CartsController < ApplicationController
     @items = Item.all
   end
 
+  def add_item
+    @cart = Cart.find_or_create_by(user_id: current_user.id)
+    @cart_items = @cart.cart_items.where(bought: false)
+    @shops = Shop.all
+    @items = Item.all
+  end
+
   # GET /carts/1 or /carts/1.json
   def show
   end
@@ -68,6 +75,6 @@ class CartsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def cart_params
-      params.require(:cart).permit(:user_id, :shop_id)
+      params.require(:cart).permit(:user_id)
     end
 end

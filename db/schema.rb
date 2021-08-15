@@ -16,7 +16,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_114454) do
   enable_extension "plpgsql"
 
   create_table "cart_items", force: :cascade do |t|
-    t.integer "quantitiy", default: 0
+    t.integer "quantity", default: 0
+    t.boolean "bought", default: false
     t.bigint "cart_id", null: false
     t.bigint "item_id", null: false
     t.datetime "created_at", precision: 6, null: false

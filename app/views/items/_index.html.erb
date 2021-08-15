@@ -1,37 +1,45 @@
-<h3>Item list</h3>
+<div style="margin-right: 20px;">
+  <h3>Item list</h3>
 
-<table>
-  <thead>
-    <tr>
-      <th>date</th>
-      <th>Shop</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Stock</th>
-      <th>Comment</th>
-      <% if controller == "carts" %>
-        <th>quantity</th>
-      <% end %>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody id="item_list">
-    <% @items.each do |item| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= l(item.created_at, format: :long) %></td>
-        <td><%= item.shop.name %></td>
-        <td><%= item.name %></td>
-        <td><%= item.price %></td>
-        <td><%= item.stock %></td>
-        <td><%= item.comment %></td>
+        <%= content_tag :th, "date" if controller_name == "shops"%>
+        <th>Shop</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Comment</th>
         <% if controller == "carts" %>
-          <%= content_tag :td, "quantity", id: "quantity_form#{item}", class: "quantity_form" %>
+          <th>quantity</th>
         <% end %>
-        <td> | <%= link_to 'Show', item %> | </td>
-        <td><%= link_to 'Edit', edit_item_path(item) %> | </td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody id="item_list">
+      <% @items.each do |item| %>
+        <tr>
+          <%= content_tag :td, l(item.created_at, format: :long) if controller_name == "shops"%>
+          <td><%= item.shop.name %></td>
+          <td><%= item.name %></td>
+          <td><%= item.price %></td>
+          <td><%= item.stock %></td>
+          <td><%= item.comment %></td>
+          <% if controller_name == "carts" %>
+            <%= form_with(model: @cart_items, local: true, url: cart_items_path) do |form| %>
+              <td><%= form.number_field :quantity, id: "quantity_form#{item}", style: "width: 40px; height: 23px", class: "quantity_form" %>個</td>
+              <td><%= form.submit "カートに追加", id: "add_item_button#{item}", class: "add_item_button" %></td>
+              <%= form.hidden_field :cart_id, value: @cart.id %>
+              <%= form.hidden_field :item_id, value: item.id %>
+            <% end %>
+          <% else %>
+            <td> | <%= link_to 'Show', item %> | </td>
+            <td><%= link_to 'Edit', edit_item_path(item) %> | </td>
+            <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
