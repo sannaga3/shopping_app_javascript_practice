@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get '/users/sign_out', to: 'users/sessions#destroy'
     root "users/sessions#new"
   end
+  resources :wallets
   resources :shops, except: %i[ new show ]
   resources :carts, only: %i[ create destroy ] do
     get 'add_item', on: :member
