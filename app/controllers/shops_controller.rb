@@ -9,15 +9,6 @@ class ShopsController < ApplicationController
     @item = Item.new
   end
 
-  # GET /shops/1 or /shops/1.json
-  def show
-  end
-
-  # GET /shops/new
-  def new
-    @shop = Shop.new
-  end
-
   # GET /shops/1/edit
   def edit
   end
@@ -41,8 +32,8 @@ class ShopsController < ApplicationController
   def update
     respond_to do |format|
       if @shop.update(shop_params)
-        format.html { redirect_to @shop, notice: "Shop was successfully updated." }
-        format.json { render :show, status: :ok, location: @shop }
+        format.html { redirect_to shops_path, notice: "Shop was successfully updated." }
+        format.json { render :show, status: :created, location: @item }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @shop.errors, status: :unprocessable_entity }

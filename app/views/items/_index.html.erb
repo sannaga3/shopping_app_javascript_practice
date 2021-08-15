@@ -34,8 +34,7 @@
               <%= form.hidden_field :item_id, value: item.id %>
             <% end %>
           <% else %>
-            <td> | <%= link_to 'Show', item %> | </td>
-            <td><%= link_to 'Edit', edit_item_path(item) %> | </td>
+            <td> | <%= link_to 'Edit', edit_item_path(item) %> | </td>
             <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
         </tr>

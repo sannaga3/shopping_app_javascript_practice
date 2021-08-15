@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  resources :cart_items
-  resources :carts do
-    get 'add_item', on: :member
-  end
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -12,8 +8,10 @@ Rails.application.routes.draw do
     get '/users/sign_out', to: 'users/sessions#destroy'
     root "users/sessions#new"
   end
-  resources :items
-  resources :shops
-  # root to: "shops#index"
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :shops, except: %i[ new show ]
+  resources :carts, only: %i[ create destroy ] do
+    get 'add_item', on: :member
+  end
+  resources :cart_items, only: %i[ create update destroy]
+  resources :items, except: %i[ new show ]
 end

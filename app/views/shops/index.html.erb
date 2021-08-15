@@ -3,7 +3,7 @@
 
 <p id="notice"><%= notice %></p>
 <br>
-<h3>new shop</h3>
+
 <%= form_with(model: @shop, remote: true, format: :json, id: "shop_form") do |form| %>
   <% if @shop.errors.any? %>
     <div id="error_explanation">
@@ -42,8 +42,7 @@
     <% @shops.each do |shop| %>
       <tr>
         <td><%= shop.name %> </td>
-        <td> | <%= link_to 'Show', shop, "data-shop-detail" => "#{shop.id}" "," "#{shop.name}" %> | </td>
-        <td><%= link_to 'Edit', edit_shop_path(shop) %> | </td>
+        <td> | <%= link_to 'Edit', edit_shop_path(shop) %> | </td>
         <td><%= link_to 'Destroy', shop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -130,8 +129,7 @@
         const html = `
                       <tr>
                         <td>${shop_name} </td>
-                        <td><a href="/shops/${shop_id}">Show</a> | </td>
-                        <td><a href="/shops/${shop_id}/edit">Edit</a> | </td>
+                        <td> | <a href="/shops/${shop_id}/edit">Edit</a> | </td>
                         <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/shops/${shop_id}">Destroy</a></td>
                       </tr>
                      `;
@@ -190,8 +188,7 @@
                         <td>${item_price}</td>
                         <td>${item_stock}</td>
                         <td>${item_comment}</td>
-                        <td> | <a href="/items/${item_id}">Show</a> | </td>
-                        <td><a href="/items/${item_id}/edit">Edit</a> | </td>
+                        <td> | <a href="/items/${item_id}/edit">Edit</a> | </td>
                         <td><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/items/${item_id}">Destroy</a></td>
                       </tr>
                     `;

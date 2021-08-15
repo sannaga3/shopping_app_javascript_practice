@@ -1,10 +1,10 @@
-<%= form_with(model: item, local: true) do |form| %>
-  <% if item.errors.any? %>
+<%= form_with(model: @item, local: true) do |form| %>
+  <% if @item.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
 
       <ul>
-        <% item.errors.full_messages.each do |message| %>
+        <% @item.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= form.label :shop_id %>
-    <%= form.text_field :shop_id %>
+    <%= form.select :shop_id, @shops.all.map {|shop| ["#{shop.name}", shop.id]}, { prompt: '選択してください', "data-value" => "" }, id: "item_shop_form"%>
   </div>
 
   <div class="actions">
