@@ -8,6 +8,16 @@ class CartsController < ApplicationController
     @items = Item.all
   end
 
+  def buy_item
+    @cart = Cart.find(params[:id])
+    @cart_items = @cart.cart_items.where(bought: false)
+    @cart_items.map do |cart_item|
+      cart_item[:bought] = true
+      cart_item.save
+    end
+    redirect_to add_item_cart_path(@cart.id)
+  end
+
   def create
     @cart = Cart.new(cart_params)
 

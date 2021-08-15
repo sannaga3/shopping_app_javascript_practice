@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :shops, except: %i[ new show ]
   resources :carts, only: %i[ create destroy ] do
     get 'add_item', on: :member
+    get 'buy_item', on: :member
   end
   resources :cart_items, only: %i[ create update destroy]
   resources :items, except: %i[ new show ]

@@ -35,6 +35,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= link_to '購入確定', buy_item_cart_path(id: @cart.id), data: { confirm: 'Are you sure?' }, class:"btn btn-info" %>
   </div>
 </div>
 
