@@ -7,7 +7,7 @@ class MoneyController < ApplicationController
   def create
     @money = Money.new(money_params)
     @wallet = Wallet.find_by(user_id: current_user.id)
-    @money_histries = current_user.wallet.money
+    @money_histries = current_user.wallet.money.order(created_at: :desc)
     total_money_elements = @money_histries.where(wallet_id: @wallet.id).pluck(:yen)
     @total_money = total_money_elements.inject(:+)
     @total_money = 0 if @money_histries[0] == nil

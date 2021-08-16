@@ -31,9 +31,8 @@
     <%= form.submit "所持金追加", class: "btn btn-info" %>
   </div>
 <% end %>
-
 <br>
 
-<%= render partial: 'money/index', money_histries: @money_histries %>
+<%= render partial: 'money/index', money_histries: @money_histries %><br>
 
-<%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %>
+<%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %><br><br>
