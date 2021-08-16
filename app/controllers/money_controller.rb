@@ -2,7 +2,6 @@ class MoneyController < ApplicationController
   before_action :set_money, only: %i[ show destroy ]
 
   def index
-    @money = Money.all
   end
 
   def create

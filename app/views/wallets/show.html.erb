@@ -33,4 +33,7 @@
 <% end %>
 
 <br>
+
+<%= render partial: 'money/index', money_histtory: @money_history %>
+
 <%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %>
