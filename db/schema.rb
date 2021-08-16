@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_15_142537) do
+ActiveRecord::Schema.define(version: 2021_08_16_001942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 2021_08_15_142537) do
     t.index ["shop_id"], name: "index_items_on_shop_id"
   end
 
+  create_table "money", force: :cascade do |t|
+    t.integer "yen", default: 0, null: false
+    t.bigint "wallet_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["wallet_id"], name: "index_money_on_wallet_id"
+  end
+
   create_table "shops", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -75,5 +83,6 @@ ActiveRecord::Schema.define(version: 2021_08_15_142537) do
   add_foreign_key "cart_items", "items"
   add_foreign_key "carts", "users"
   add_foreign_key "items", "shops"
+  add_foreign_key "money", "wallets"
   add_foreign_key "wallets", "users"
 end

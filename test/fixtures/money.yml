@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  yen: 1
+  wallet: one
+
+two:
+  yen: 1
+  wallet: two
