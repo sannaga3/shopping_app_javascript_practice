@@ -12,13 +12,10 @@
   </thead>
 
   <tbody>
-    <% @money.each do |money| %>
+    <% @moneys.each do |money| %>
       <tr>
         <td><%= money.yen %></td>
         <td><%= money.wallet_id %></td>
-        <td><%= link_to 'Show', money %></td>
-        <td><%= link_to 'Edit', edit_money_path(money) %></td>
-        <td><%= link_to 'Destroy', money, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

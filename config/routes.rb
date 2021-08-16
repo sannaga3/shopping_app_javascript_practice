@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :money
+  resources :money, only: %i[ index create destroy ]
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'

@@ -2,6 +2,13 @@ class WalletsController < ApplicationController
   before_action :set_wallet, only: %i[ show destroy ]
 
   def show
+    @money = Money.new
+    money_elements = current_user.wallet.money
+    @total_money = 0
+    money_elements.each do |money|
+      @total_money += money[:yen]
+    end
+    @total_money = 0 if money_elements[0] == nil
   end
 
   def destroy
