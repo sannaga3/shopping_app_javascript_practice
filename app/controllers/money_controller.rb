@@ -6,13 +6,17 @@ class MoneyController < ApplicationController
 
   def create
     @money = Money.new(money_params)
-
+    @wallet = Wallet.find_by(user_id: current_user.id)
+    @money_histries = current_user.wallet.money
+    total_money_elements = @money_histries.where(wallet_id: @wallet.id).pluck(:yen)
+    @total_money = total_money_elements.inject(:+)
+    @total_money = 0 if @money_histries[0] == nil
     respond_to do |format|
       if @money.save
         format.html { redirect_to wallet_path(current_user.wallet.id), notice: "Money was successfully created." }
         format.json { render :show, status: :created, location: @money }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render 'wallets/show', status: :unprocessable_entity }
         format.json { render json: @money.errors, status: :unprocessable_entity }
       end
     end

@@ -3,12 +3,10 @@ class WalletsController < ApplicationController
 
   def show
     @money = Money.new
-    @money_history = current_user.wallet.money
-    @total_money = 0
-    @money_history.each do |money|
-      @total_money += money[:yen]
-    end
-    @total_money = 0 if @money_history[0] == nil
+    @money_histries = current_user.wallet.money
+    total_money_elements = @money_histries.where(wallet_id: @wallet.id).pluck(:yen)
+    @total_money = total_money_elements.inject(:+)
+    @total_money = 0 if @money_histries[0] == nil
   end
 
   def destroy

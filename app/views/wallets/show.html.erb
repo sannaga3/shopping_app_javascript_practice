@@ -13,7 +13,7 @@
       <h2><%= pluralize(@money.errors.count, "error") %> prohibited this money from being saved:</h2>
 
       <ul>
-        <% money.errors.full_messages.each do |message| %>
+        <% @money.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -34,6 +34,6 @@
 
 <br>
 
-<%= render partial: 'money/index', money_histtory: @money_history %>
+<%= render partial: 'money/index', money_histries: @money_histries %>
 
 <%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %>

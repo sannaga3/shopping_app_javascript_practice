@@ -7,7 +7,6 @@ class CartsController < ApplicationController
     @shops = Shop.all
     @items = Item.all
     wallet = Wallet.find_or_create_by(user_id: current_user.id)
-    # @money = wallet.money
   end
 
   def buy_item
