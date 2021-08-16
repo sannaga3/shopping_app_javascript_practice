@@ -65,7 +65,6 @@ ActiveRecord::Schema.define(version: 2021_08_15_142537) do
   end
 
   create_table "wallets", force: :cascade do |t|
-    t.integer "money"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

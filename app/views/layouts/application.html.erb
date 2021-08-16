@@ -10,16 +10,27 @@
   </head>
 
   <body>
-    <% if user_signed_in? %>
-        <span>user: <%= current_user.name %></span>
-        <%= link_to "profile_edit", edit_user_registration_path(current_user.id) %>
-        <%= link_to "shop", shops_path %>
-        <%= link_to "cart", add_item_cart_path(current_user.id) %>
-        <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
-      <% else %>
-        <%= link_to "新規登録", new_user_registration_path %>
-        <%= link_to "ログイン", new_user_session_path %>
-      <% end %>
-      <%= yield %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+      <a class="navbar-brand" href="#">shopping_app</a>
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="ナビゲーションの切替">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav text-white">
+          <% if user_signed_in? %>
+            <span class="pl-3 pr-5">user : <%= current_user.name %></span>
+            <%= link_to "profile_edit", edit_user_registration_path(current_user.id), class: "text-white px-3" %>
+            <%= link_to "shop", shops_path, class: "text-white px-3" %>
+            <%= link_to "cart", add_item_cart_path(current_user.cart.id), class: "text-white px-3" %>
+            <%= link_to "wallet", wallet_path(current_user.wallet.id), class: "text-white px-3" if controller != "shop" %>
+            <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "text-white px-3" %>
+          <% else %>
+            <%= link_to "新規登録", new_user_registration_path, class: "text-white px-3" %>
+            <%= link_to "ログイン", new_user_session_path, class: "text-white px-3" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+    <%= yield %>
   </body>
 </html>
