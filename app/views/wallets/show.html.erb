@@ -1,3 +1,4 @@
+<br>
 <h1><%= "#{current_user.name}'s wallet'" %></h1><br>
 <p id="notice"><%= notice %></p>
 <p>
@@ -36,3 +37,7 @@
 <%= render partial: 'money/index', money_histries: @money_histries %><br>
 
 <%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %><br><br>
+
+<div id='app'>
+  {{message}}
+</div>
