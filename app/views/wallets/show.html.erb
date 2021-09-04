@@ -1,43 +1,43 @@
 <br>
-<h1><%= "#{current_user.name}'s wallet'" %></h1><br>
-<p id="notice"><%= notice %></p>
-<p>
-  <strong>所持金</strong>
-  <%= "#{@total_money} 円" %>
-</p>
+<div id='app'>
+  <h1><%= "#{current_user.name}'s wallet'" %></h1><br>
+  <p id="notice"><%= notice %></p>
+  <p>
+    <strong>所持金</strong>
+    <%= "#{@total_money} 円" %>
+  </p>
 
-<br>
+  <br>
 
-<%= form_with(model: @money, local: true) do |form| %>
-  <% if @money.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@money.errors.count, "error") %> prohibited this money from being saved:</h2>
+  <%= form_with(model: @money, remote: true) do |form| %>
+    <% if @money.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@money.errors.count, "error") %> prohibited this money from being saved:</h2>
 
-      <ul>
-        <% @money.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% @money.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.number_field :yen, style: "width: 100px;", autofocus: true %>
+      <%= form.label "円" %>
+    </div>
+
+    <%= form.hidden_field :wallet_id, value: current_user.wallet.id %><br>
+
+    <div class="actions">
+      <%= form.submit "所持金追加", class: "btn btn-info" %>
     </div>
   <% end %>
+  <br>
 
-  <div class="field">
-    <%= form.number_field :yen, style: "width: 100px;", autofocus: true %>
-    <%= form.label "円" %>
+  <div id="money_list">
+    <money-list :money_histries="<%= @money_histries.to_json %>" />
   </div>
-
-  <%= form.hidden_field :wallet_id, value: current_user.wallet.id %><br>
-
-  <div class="actions">
-    <%= form.submit "所持金追加", class: "btn btn-info" %>
-  </div>
-<% end %>
-<br>
-
-<%= render partial: 'money/index', money_histries: @money_histries %><br>
+</div>
 
 <%= link_to 'Back', add_item_cart_path(current_user.cart.id), class: "btn btn-secondary" %><br><br>
-
-<div id='app'>
-  {{message}}
-</div>

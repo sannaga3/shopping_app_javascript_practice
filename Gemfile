@@ -57,3 +57,4 @@ gem 'bootstrap', '~> 4.5.0'
 
 gem 'rails-i18n'
 gem 'devise'
+gem 'eslint-rails', '~> 1.3'

@@ -13,6 +13,9 @@ class MoneyController < ApplicationController
     @total_money = 0 if @money_histries[0] == nil
     respond_to do |format|
       if @money.save
+        # @money2 = Money.new(money_params) 別の親インスタンスにも同時に保存できる
+        # @money2.wallet.user_id = User.first.id
+        # User.first.wallet.money << @money2
         format.html { redirect_to wallet_path(current_user.wallet.id), notice: "Money was successfully created." }
         format.json { render :show, status: :created, location: @money }
       else

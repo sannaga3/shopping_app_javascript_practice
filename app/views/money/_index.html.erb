@@ -16,6 +16,8 @@
         <td style="width: 200px;"><%= l(money.created_at, format: :long2) %></td>
         <td style="width: 120px;"><%= "#{money.yen} 円" %></td>
         <td><%= money.remarks %></td>
+        <td>{{ message }}</td>
+        <td>{{ remarks }}</td>
       </tr>
     <% end %>
   </tbody>
