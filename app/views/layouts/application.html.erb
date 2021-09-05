@@ -12,13 +12,13 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
       <a class="navbar-brand" href="#">shopping_app</a>
-      <span class="pl-3 pr-5 text-white text-left">user : <%= current_user.name %></span>
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="ナビゲーションの切替">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav text-white">
           <% if user_signed_in? %>
+            <span class="pl-3 pr-5 text-white text-left">user : <%= current_user.name %></span>
             <%= link_to "profile_edit", edit_user_registration_path(current_user.id), class: "text-white px-3" %>
             <%= link_to "shop", shops_path, class: "text-white px-3" %>
             <%= link_to "cart", add_item_cart_path(current_user.cart.id), class: "text-white px-3" %>

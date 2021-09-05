@@ -44,7 +44,7 @@
 //     components: { App }
 //   })
 // })
-//
+
 //
 //
 // If the project is using turbolinks, install 'vue-turbolinks':
